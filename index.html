@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue teste</title>
+</head>
+<body>
+
+    <form v-on="submit: enviar">
+        <label>Nome:</label><br>
+        <input type="text" name="name" v-model="name">
+        <br>
+        <label>Email:</label><br>
+        <input type="text" name="email" v-model="email">
+        <br><br>
+        <label>Tipo de automóvel:</label><br>
+        <input type="text" name="vehicle_type" v-model="vehicle_type">
+        <br><br>
+        <label>Placa:</label><br>
+        <input type="text" name="board_number" v-model="board_number">
+        <br><br>
+        <input type="submit" value="Enviar">
+    </form>
+    <div id="formulario-de-cotacao"></div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+<script type="text/javascript">
+    var teste  = new Vue({
+        el: '#formulario-de-cotacao',
+        data() {
+            return {
+              name: '',
+              email: '',
+              vehicle_type: '',
+              board_number: '',
+              errors: []
+            }
+        },
+    methods: {
+        enviar: function(event) {
+        event.preventDefault();
+        this.$http.post('http://localhost:8000/cotacaorequest/SendCotacaoRequest/', JSON.stringify(this.data))
+        .then(function(response) {
+            this.data = response.body;
+        }).catch(e => {
+        this.errors.push(e)
+        }) 
+    }   
+  }
+})
+</script>
+</body>
+</html>
